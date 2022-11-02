@@ -1,0 +1,45 @@
+version: '3'
+services:
+  "audio_feeder":
+    build: "."
+    volumes:
+      - "./config/audio_feeder/config.yml:/etc/audio_feeder/config.yml"
+      - "${DATA_DIR-/data/audio_feeder}://etc/audio_feeder/"
+      - "${AUDIOBOOK_DIR}:/etc/audio_feeder/static/media/audiobooks"
+      - "${DATA_DIR}/logs/audio_feeder:/etc/audio_feeder/logs"
+      - "${DATABASE_DIR-/data/audio_feeder/database}:/etc/audio_feeder/database"
+      - "${STATIC_DIR-/data/audio_feeder/static}:/etc/audio_feeder/static"
+
+    networks:
+      - "internal"
+
+  "nginx":
+    image: "nginx:latest"
+    restart: "unless-stopped"
+    container_name: "audiofeeder-nginx"
+    volumes:
+      - "./config/nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "./config/nginx/audiofeeder.conf:/etc/nginx/sites-enabled/audiofeeder.conf"
+      - "${DATA_DIR}/nginx_custom:/etc/nginx/custom"
+      - "${DATA_DIR}/logs/nginx:/var/log/nginx"
+      - "${STATIC_DIR-/data/audio_feeder/static}:/static"
+      - "${AUDIOBOOK_DIR}:/static/media/audiobooks"
+
+    ports:
+      - "8080:80"
+
+    depends_on:
+      - "audio_feeder"
+
+    networks:
+      - "docknet"
+      - "internal"
+
+    command: ["nginx", "-g", "daemon off;"]
+
+networks:
+  "docknet":
+    external: true
+    name: "docknet"
+  "internal":
+    name: "internal"
