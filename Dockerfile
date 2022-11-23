@@ -11,6 +11,5 @@ RUN pip install gunicorn
 RUN apt-get update -qq && apt-get -y install ffmpeg
 CMD gunicorn --access-logfile /etc/audio_feeder/logs/audio_feeder.access.log \
              --error-logfile /etc/audio_feeder/logs/audio_feeder.error.log \
-             -e AF_LOGGING_LEVEL=INFO \
              -b 0.0.0.0:9090 \
              'audio_feeder.app:create_app()'
