@@ -6,3 +6,4 @@ audio[-_]feeder
 config/audio_feeder/config.yml
 config/nginx/custom
 config/nginx/logs
+config/nginx/rp-config
