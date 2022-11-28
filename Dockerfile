@@ -7,11 +7,11 @@ RUN apt-get update -qq && apt-get -y install ffmpeg
 
 # If you want to install audio_feeder from a local directory, make sure this exists
 RUN rm -rf /tmp/audio_feeder
-COPY ./audio[_-]feeder /tmp/audio_feeder
+COPY ./audio[\\-_]feeder /tmp/audio_feeder
 
 RUN if [ ! -d "/tmp/audio_feeder" ];\
-    then pip install "audio_feeder>=0.6.0"; \
-    else pip install "/tmp/audio_feeder"; fi
+    then echo "Installing from PyPI"; pip install "audio_feeder>=0.6.0"; \
+    else echo "Using local audio_feeder"; pip install "/tmp/audio_feeder"; fi
 
 CMD gunicorn --access-logfile /etc/audio_feeder/logs/audio_feeder.access.log \
              --error-logfile /etc/audio_feeder/logs/audio_feeder.error.log \
