@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer to trigger a database update
+
+[Timer]
+Unit=update_audiobooks.service
+# Run every 3 hours
+OnCalendar=00/3:17
+
+[Install]
+WantedBy=timers.target

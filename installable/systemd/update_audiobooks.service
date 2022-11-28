@@ -1,0 +1,5 @@
+[Unit]
+Description=Trigger an update of the audiobook database
+
+[Service]
+ExecStart=/usr/bin/curl -L localhost:8080/update
