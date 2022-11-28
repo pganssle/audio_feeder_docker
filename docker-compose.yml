@@ -2,6 +2,8 @@ version: '3'
 services:
   "audio_feeder":
     build: "."
+    environment:
+        - "AF_LOGGING_LEVEL=${LOGGING_LEVEL-INFO}"
     volumes:
       - "./config/audio_feeder/config.yml:/etc/audio_feeder/config.yml"
       - "${DATA_DIR-/data/audio_feeder}://etc/audio_feeder/"
