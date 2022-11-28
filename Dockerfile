@@ -1,9 +1,17 @@
-FROM python:3.10-bullseye
+FROM python:3.10-slim-bullseye
 
 WORKDIR /
 
-RUN pip install gunicorn
 RUN apt-get update -qq && apt-get -y install ffmpeg
+
+# This stuff is necessary for building Pillow from source
+RUN apt-get -y install \
+    build-essential \
+    libjpeg-turbo-progs \
+    libjpeg62-turbo-dev \
+    zlib1g-dev
+
+RUN pip install gunicorn
 
 # If you want to install audio_feeder from a local directory, make sure this exists
 RUN rm -rf /tmp/audio_feeder
