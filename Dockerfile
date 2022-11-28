@@ -4,8 +4,11 @@ WORKDIR /
 
 RUN pip install gunicorn
 RUN apt-get update -qq && apt-get -y install ffmpeg
+
 # If you want to install audio_feeder from a local directory, make sure this exists
-COPY ./audio_feede[r] /tmp/audio_feeder
+RUN rm -rf /tmp/audio_feeder
+COPY ./audio[_-]feeder /tmp/audio_feeder
+
 RUN if [ ! -d "/tmp/audio_feeder" ];\
     then pip install "audio_feeder>=0.4.0"; \
     else pip install "/tmp/audio_feeder"; fi
