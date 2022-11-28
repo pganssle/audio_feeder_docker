@@ -8,6 +8,7 @@ services:
       - "./config/audio_feeder/config.yml:/etc/audio_feeder/config.yml"
       - "${DATA_DIR-/data/audio_feeder}://etc/audio_feeder/"
       - "${AUDIOBOOK_DIR}:/etc/audio_feeder/static/media/audiobooks"
+      - "${MEDIA_CACHE_DIR}:/etc/audio_feeder/static/media_cache"
       - "${DATA_DIR}/logs/audio_feeder:/etc/audio_feeder/logs"
       - "${DATABASE_DIR-/data/audio_feeder/database}:/etc/audio_feeder/database"
       - "${STATIC_DIR-/data/audio_feeder/static}:/etc/audio_feeder/static"
@@ -26,6 +27,7 @@ services:
       - "${DATA_DIR}/logs/nginx:/var/log/nginx"
       - "${STATIC_DIR-/data/audio_feeder/static}:/static"
       - "${AUDIOBOOK_DIR}:/static/media/audiobooks"
+      - "${MEDIA_CACHE_DIR}:/static/media_cache"
 
     ports:
       - "8080:80"

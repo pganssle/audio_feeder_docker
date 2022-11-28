@@ -2,3 +2,4 @@ AUDIOBOOK_DIR=...
 DATA_DIR=/data/audio_feeder
 DATABASE_DIR=/data/audio_feeder/database
 STATIC_DIR=/data/audio_feeder/static
+MEDIA_CACHE_DIR=/data/audio_feeder/static/media_cache
