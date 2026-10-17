@@ -1,25 +1,32 @@
+# Copy this file to config/audio_feeder/config.yml before starting the
+# containers. Any setting that isn't listed here takes its default value; see
+# https://audio-feeder.readthedocs.io/en/latest/configuration.html for all of
+# them. Note that `audio-feeder install` (./install_audio_feeder.sh) rewrites
+# this file with every setting in it, which keeps your values but drops these
+# comments.
+
+# The URLs in the feeds and QR codes are built from these, so base_host needs
+# to be an address of this machine that your podcast app can reach (not
+# localhost), and base_port is the port that nginx is published on.
 base_protocol: http
 base_host: localhost
 base_port: 8080
-base_truncation_point: 500
-cover_cache_path: images/entry_cover_cache
-css_loc: css
-database_loc: '{{CONFIG}}/database/db.sqlite'
-entry_templates_loc: '{{TEMPLATES}}/entry_types'
+
+# The name shown in the top bar of the book list.
+site_title: audio-feeder
+
+# Used to look up book metadata and covers on Google Books.
 google_api_key: null
-main_css_files:
-- main.css
-media_path: media
-pages_templates_loc: '{{TEMPLATES}}/pages'
-qr_cache_path: images/qr_cache
-rss_entry_templates_loc: '{{TEMPLATES}}/rss/entry_types'
-rss_feed_urls: rss/{id}.xml
-rss_templates_loc: '{{TEMPLATES}}/rss'
-schema_loc: '{{CONFIG}}/database/schema.yml'
-site_images_loc: images/site-images
-static_media_path: '{{CONFIG}}/static'
-static_media_url: '{{URL}}/static'
-templates_base_loc: '{{CONFIG}}/templates'
-thumb_max:
-- 200
-- 400
+
+# The directories that `audio-feeder update` and the /update page search for
+# books, relative to the media directory. AUDIOBOOK_DIR is mounted at
+# `audiobooks` in it.
+content_paths:
+  books:
+  - audiobooks
+
+# When to retry looking up metadata after failures. Durations are a number of
+# seconds or a mapping like {hours: 6}.
+metadata_retry:
+  google_books:
+    quota_cooldown: {hours: 6}
