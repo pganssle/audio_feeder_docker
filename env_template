@@ -1,5 +1,18 @@
+# The directory containing your audiobooks (required).
 AUDIOBOOK_DIR=...
+
+# Where the database, static files and rendered feeds are kept on the host.
 DATA_DIR=/data/audio_feeder
 DATABASE_DIR=/data/audio_feeder/database
 STATIC_DIR=/data/audio_feeder/static
 MEDIA_CACHE_DIR=/data/audio_feeder/static/media_cache
+
+LOGGING_LEVEL=INFO
+
+# The number of threads that gunicorn uses to handle requests.
+GUNICORN_THREADS=12
+
+# The version of audio-feeder to install when building the image. Uncomment
+# this to install an unreleased version from git (with `docker-compose build
+# --no-cache` to pick up new commits).
+#AUDIO_FEEDER_SPEC=audio-feeder @ git+https://github.com/pganssle/audio-feeder@main

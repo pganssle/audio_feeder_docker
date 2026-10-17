@@ -1,17 +1,22 @@
-version: '3'
 services:
   "audio_feeder":
-    build: "."
+    build:
+      context: "."
+      args:
+        # Unless this is set in .env, the default in the Dockerfile is used.
+        - "AUDIO_FEEDER_SPEC"
+    restart: "unless-stopped"
     environment:
-        - "AF_LOGGING_LEVEL=${LOGGING_LEVEL-INFO}"
+      - "AF_LOGGING_LEVEL=${LOGGING_LEVEL:-INFO}"
+      - "GUNICORN_THREADS=${GUNICORN_THREADS:-12}"
     volumes:
       - "./config/audio_feeder/config.yml:/etc/audio_feeder/config.yml"
-      - "${DATA_DIR-/data/audio_feeder}://etc/audio_feeder/"
-      - "${AUDIOBOOK_DIR}:/etc/audio_feeder/static/media/audiobooks"
-      - "${MEDIA_CACHE_DIR}:/etc/audio_feeder/static/media_cache"
-      - "${DATA_DIR}/logs/audio_feeder:/etc/audio_feeder/logs"
-      - "${DATABASE_DIR-/data/audio_feeder/database}:/etc/audio_feeder/database"
-      - "${STATIC_DIR-/data/audio_feeder/static}:/etc/audio_feeder/static"
+      - "${DATA_DIR:-/data/audio_feeder}:/etc/audio_feeder/"
+      - "${AUDIOBOOK_DIR:?Set AUDIOBOOK_DIR in .env}:/etc/audio_feeder/static/media/audiobooks"
+      - "${MEDIA_CACHE_DIR:-/data/audio_feeder/static/media_cache}:/etc/audio_feeder/static/media_cache"
+      - "${DATA_DIR:-/data/audio_feeder}/logs/audio_feeder:/etc/audio_feeder/logs"
+      - "${DATABASE_DIR:-/data/audio_feeder/database}:/etc/audio_feeder/database"
+      - "${STATIC_DIR:-/data/audio_feeder/static}:/etc/audio_feeder/static"
 
     networks:
       - "internal"
@@ -23,11 +28,11 @@ services:
     volumes:
       - "./config/nginx/nginx.conf:/etc/nginx/nginx.conf"
       - "./config/nginx/audiofeeder.conf:/etc/nginx/sites-enabled/audiofeeder.conf"
-      - "${DATA_DIR}/nginx_custom:/etc/nginx/custom"
-      - "${DATA_DIR}/logs/nginx:/var/log/nginx"
-      - "${STATIC_DIR-/data/audio_feeder/static}:/static"
-      - "${AUDIOBOOK_DIR}:/static/media/audiobooks"
-      - "${MEDIA_CACHE_DIR}:/static/media_cache"
+      - "${DATA_DIR:-/data/audio_feeder}/nginx_custom:/etc/nginx/custom"
+      - "${DATA_DIR:-/data/audio_feeder}/logs/nginx:/var/log/nginx"
+      - "${STATIC_DIR:-/data/audio_feeder/static}:/static"
+      - "${AUDIOBOOK_DIR:?Set AUDIOBOOK_DIR in .env}:/static/media/audiobooks"
+      - "${MEDIA_CACHE_DIR:-/data/audio_feeder/static/media_cache}:/static/media_cache"
 
     ports:
       - "8080:80"
@@ -36,14 +41,10 @@ services:
       - "audio_feeder"
 
     networks:
-      - "docknet"
       - "internal"
 
     command: ["nginx", "-g", "daemon off;"]
 
 networks:
-  "docknet":
-    external: true
-    name: "docknet"
   "internal":
     name: "internal"

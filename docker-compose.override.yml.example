@@ -1,0 +1,18 @@
+# To make the nginx container reachable from a reverse proxy running in another
+# container, copy this to docker-compose.override.yml (which docker-compose
+# reads automatically) and change "docknet" to the name of a network that the
+# reverse proxy is on. If the network doesn't exist yet, create it with:
+#
+#   docker network create docknet
+#
+# The reverse proxy can then forward requests to http://audiofeeder-nginx:80.
+services:
+  "nginx":
+    networks:
+      - "docknet"
+      - "internal"
+
+networks:
+  "docknet":
+    external: true
+    name: "docknet"
