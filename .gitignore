@@ -1,5 +1,5 @@
 # If working from a clone rather than the PyPI version
-audio[-_]feeder
+/audio[-_]feeder
 
 # Config
 .env
