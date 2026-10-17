@@ -1,0 +1,6 @@
+# Only send what the Dockerfile needs to the builder. In particular, this keeps
+# .env and the configuration out of the build context.
+*
+!gunicorn.conf.py
+!audio_feeder
+!audio-feeder
