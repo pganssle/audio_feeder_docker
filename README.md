@@ -17,7 +17,7 @@ I personally put the whole thing behind an [`nginx` reverse proxy](https://docs.
    ```
 
    This has to exist before the containers are first started, because otherwise Docker creates an empty directory in its place. At the very least, set `base_host` to an address of this machine that your podcast app can reach (not `localhost`), since the URLs in the feeds are built from it. See the [configuration documentation](https://audio-feeder.readthedocs.io/en/latest/configuration.html) for the other settings.
-4. Build the image with `docker compose build`. Until `audio-feeder` 0.7.0 is released, you need to build it from git instead; see [Choosing the version of audio-feeder](#choosing-the-version-of-audio-feeder).
+4. Build the image with `docker compose build`.
 5. Run `./install_audio_feeder.sh`, which runs `audio-feeder install` in the container to set up the configuration directory. This also rewrites `config.yml` with every setting in it, keeping your values but not the comments.
 6. Start the containers with `docker compose up -d`.
 7. Load your books into the database (generating the feeds for your books) with:
