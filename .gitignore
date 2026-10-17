@@ -7,3 +7,6 @@ config/audio_feeder/config.yml
 config/nginx/custom
 config/nginx/logs
 config/nginx/rp-config
+
+# Local docker-compose customizations
+docker-compose.override.yml
